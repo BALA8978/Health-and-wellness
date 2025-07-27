@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Fitness Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .filter-btn.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        /* Style for the modal */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .tab-btn.active {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center mb-8">
+            <h1 class="text-4xl sm:text-5xl font-bold text-indigo-600">Fitness Hub</h1>
+            <p class="text-gray-600 mt-2">Your complete solution for booking classes, tracking progress, and shopping for gear.</p>
+        </header>
+
+        <div class="mb-8 flex flex-wrap justify-center border-b border-gray-200">
+            <button data-tab="classes" class="tab-btn py-4 px-6 block hover:text-indigo-500 focus:outline-none text-indigo-600 border-b-2 font-medium border-indigo-600 active">Classes</button>
+            <button data-tab="shop" class="tab-btn py-4 px-6 block hover:text-indigo-500 focus:outline-none text-gray-500">Shop</button>
+            <button data-tab="dashboard" class="tab-btn py-4 px-6 block hover:text-indigo-500 focus:outline-none text-gray-500">Dashboard</button>
+        </div>
+
+        <main>
+            <div id="classes" class="tab-content">
+                <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="font-semibold text-gray-700 block mb-2">Class Type</label>
+                            <div id="type-filter" class="flex flex-wrap gap-2">
+                                <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="type" data-filter="all">All</button>
+                                <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="type" data-filter="yoga">Yoga</button>
+                                <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="type" data-filter="pilates">Pilates</button>
+                                <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="type" data-filter="gym">Gym</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="trainer-filter" class="font-semibold text-gray-700 block mb-2">Trainer</label>
+                            <select id="trainer-filter" class="w-full p-2.5 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                <option value="all">All Trainers</option>
+                                <option value="Alex">Alex Morgan</option>
+                                <option value="Samantha">Samantha Ray</option>
+                                <option value="Ben">Ben Carter</option>
+                                <option value="Chloe">Chloe Davis</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-gray-700 block mb-2">Time of Day</label>
+                            <div id="time-filter" class="flex flex-wrap gap-2">
+                                <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="time" data-filter="all">Any Time</button>
+                                <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="time" data-filter="morning">Morning</button>
+                                <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="time" data-filter="afternoon">Afternoon</button>
+                                <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="time" data-filter="evening">Evening</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="class-schedule" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+                <div id="no-results" class="hidden col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16">
+                    <i class="fa-solid fa-magnifying-glass text-4xl text-gray-400"></i>
+                    <h3 class="text-2xl font-semibold mt-4 text-gray-700">No Classes Found</h3>
+                    <p class="text-gray-500 mt-2">Try adjusting your filters to find available classes.</p>
+                </div>
+            </div>
+
+            <div id="shop" class="tab-content hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1">
+                        <img src="https://placehold.co/600x600/E0E7FF/1F2937?text=Yoga+Mat" alt="Yoga Mat" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold">Eco-Friendly Yoga Mat</h3>
+                            <p class="text-gray-600 mt-2">Perfect for all types of yoga and pilates.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <p class="text-lg font-semibold text-indigo-600">$25.00 <span class="text-sm text-gray-500 line-through">$30.00</span></p>
+                                <button class="add-to-cart-btn bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1">
+                        <img src="https://placehold.co/600x600/FEF3C7/1F2937?text=Protein" alt="Protein Powder" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold">Whey Protein Powder</h3>
+                            <p class="text-gray-600 mt-2">Vanilla flavor, 25g protein per serving.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <p class="text-lg font-semibold text-indigo-600">$40.00</p>
+                                <button class="add-to-cart-btn bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+            <div id="dashboard" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Log Today's Activity</h3>
+                        <form id="log-form">
+                            <div class="mb-4">
+                                <label for="activity-type" class="font-semibold text-gray-700 block mb-2">Activity Type</label>
+                                <select id="activity-type" class="w-full p-2.5 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                    <option>Workout</option>
+                                    <option>Nutrition</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="activity-details" class="font-semibold text-gray-700 block mb-2">Details (e.g., 'Ran 5k' or 'Ate salad')</label>
+                                <input type="text" id="activity-details" class="w-full p-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" required>
+                            </div>
+                            <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">Log Activity</button>
+                        </form>
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Your Progress</h3>
+                        <canvas id="progress-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="booking-modal" class="fixed inset-0 z-50 items-center justify-center hidden modal-backdrop">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md m-4 p-8">
+            <h2 class="text-2xl font-bold mb-4" id="modal-title">Book Class</h2>
+            <p id="modal-details" class="text-gray-600 mb-6">Details about the class.</p>
+            <div class="flex justify-end gap-4">
+                <button id="modal-cancel-btn" class="px-6 py-2 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-colors">Close</button>
+                <button id="modal-confirm-btn" class="px-6 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors">Confirm Booking</button>
+            </div>
+            <p id="modal-feedback" class="text-green-600 font-semibold mt-4 text-center hidden">Success! An email/SMS reminder has been sent.</p>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Data for Classes (can be managed by trainers) ---
+            let classesData = [
+    {
+        id: 1,
+        type: 'yoga',
+        trainer: 'Samantha',
+        time: 'morning',
+        name: 'Sunrise Vinyasa Flow',
+        timeRange: '05:00 AM - 06:00 AM',
+        days: 'Monday, Wednesday',
+        img: 'yoga.jpg',
+        color: 'indigo'
+    },
+    {
+        id: 2,
+        type: 'gym',
+        trainer: 'Ben',
+        time: 'evening',
+        name: 'Full Body HIIT',
+        timeRange: '05:30 AM - 08:00 AM',
+        days: 'Tuesday, Thursday',
+        img: 'gym.jpg',
+        color: 'red'
+    },
+    {
+        id: 3,
+        type: 'pilates',
+        trainer: 'Chloe',
+        time: 'afternoon',
+        name: 'Core & Stability',
+        timeRange: '06:00 AM- 09:00 AM',
+        days: 'Monday, Friday',
+        img: 'pilate.jpg',
+        color: 'blue'
+    },
+    {
+        id: 4,
+        type: 'gym',
+        trainer: 'Ben',
+        time: 'morning',
+        name: 'Strength Training',
+        timeRange: '05:00 PM - 07:00 PM',
+        days: 'Wednesday, Friday',
+        img: 'strenthgym.jpg',
+        color: 'red'
+    },
+    {
+        id: 5,
+        type: 'yoga',
+        trainer: 'Alex',
+        time: 'evening',
+        name: 'Restorative Yoga',
+        timeRange: '05:00 PM - 08:00 PM',
+        days: 'Sunday',
+        img: 'RestorativeYoga.jpg',
+        color: 'indigo'
+    },
+    {
+        id: 6,
+        type: 'pilates',
+        trainer: 'Chloe',
+        time: 'morning',
+        name: 'Reformer Essentials',
+        timeRange: '05:00 PM - 08:00 PM',
+        days: 'Tuesday, Thursday',
+        img: 'Reformer.jpg',
+        color: 'blue'
+    }
+];
+
+ classScheduleContainer = document.getElementById('class-schedule');
+            
+            // --- Populate Class Cards ---
+            function renderClasses() {
+                classScheduleContainer.innerHTML = '';
+                classesData.forEach(cls => {
+                    const card = `
+                        <div class="class-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1" data-id="${cls.id}" data-type="${cls.type}" data-trainer="${cls.trainer}" data-time="${cls.time}">
+                            <img src="${cls.img}" alt="${cls.name}" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <p class="text-sm text-${cls.color}-500 font-semibold">${cls.type.charAt(0).toUpperCase() + cls.type.slice(1)}</p>
+                                <h3 class="text-xl font-bold mt-1">${cls.name}</h3>
+                                <div class="text-gray-600 mt-3 space-y-2">
+                                    <p><i class="fa-solid fa-user mr-2 w-4 text-center"></i>${cls.trainer} ${cls.trainer === 'Alex' ? 'Morgan' : cls.trainer === 'Samantha' ? 'Ray' : cls.trainer === 'Ben' ? 'Carter' : 'Davis'}</p>
+                                    <p><i class="fa-solid fa-clock mr-2 w-4 text-center"></i>${cls.timeRange}</p>
+                                    <p><i class="fa-solid fa-calendar-day mr-2 w-4 text-center"></i>${cls.days}</p>
+                                </div>
+                                <button class="book-btn w-full mt-4 bg-${cls.color}-600 text-white font-semibold py-2.5 rounded-lg hover:bg-${cls.color}-700 transition-colors" data-class-id="${cls.id}">Book Now</button>
+                            </div>
+                        </div>
+                    `;
+                    classScheduleContainer.innerHTML += card;
+                });
+                // Re-attach event listeners for booking after re-render
+                attachBookingListeners();
+            }
+
+
+            // --- Tab Navigation ---
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    document.getElementById(tab.dataset.tab).classList.remove('hidden');
+                });
+            });
+
+
+            // --- Class Filtering Logic ---
+            const filters = { type: 'all', trainer: 'all', time: 'all' };
+            const noResultsMessage = document.getElementById('no-results');
+
+            function applyFilters() {
+                let hasVisibleCards = false;
+                document.querySelectorAll('.class-card').forEach(card => {
+                    const typeMatch = filters.type === 'all' || card.dataset.type === filters.type;
+                    const trainerMatch = filters.trainer === 'all' || card.dataset.trainer === filters.trainer;
+                    const timeMatch = filters.time === 'all' || card.dataset.time === filters.time;
+
+                    if (typeMatch && trainerMatch && timeMatch) {
+                        card.style.display = 'block';
+                        hasVisibleCards = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                noResultsMessage.style.display = hasVisibleCards ? 'none' : 'block';
+            }
+
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const filterGroup = button.dataset.filterGroup;
+                    filters[filterGroup] = button.dataset.filter;
+                    document.querySelectorAll(`.filter-btn[data-filter-group="${filterGroup}"]`).forEach(btn => btn.classList.remove('active', 'bg-indigo-600', 'text-white'));
+                    button.classList.add('active', 'bg-indigo-600', 'text-white');
+                    applyFilters();
+                });
+            });
+
+            document.getElementById('trainer-filter').addEventListener('change', (e) => {
+                filters.trainer = e.target.value;
+                applyFilters();
+            });
+
+            // --- Booking Modal Logic ---
+            const bookingModal = document.getElementById('booking-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDetails = document.getElementById('modal-details');
+            const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+            const modalFeedback = document.getElementById('modal-feedback');
+
+            function attachBookingListeners() {
+                document.querySelectorAll('.book-btn').forEach(button => {
+                     button.addEventListener('click', function(e) {
+                        const classId = e.currentTarget.dataset.classId;
+                        const classData = classesData.find(c => c.id == classId);
+                        const isBooked = e.currentTarget.textContent === 'Cancel Booking';
+
+                        modalTitle.textContent = isBooked ? 'Cancel Booking' : 'Book Class';
+                        modalDetails.textContent = `You are about to ${isBooked ? 'cancel your spot in' : 'book'} "${classData.name}" with ${classData.trainer}.`;
+                        modalConfirmBtn.textContent = isBooked ? 'Confirm Cancellation' : 'Confirm Booking';
+                        modalConfirmBtn.dataset.classId = classId;
+                        
+                        if(isBooked) {
+                            modalConfirmBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                            modalConfirmBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                        } else {
+                            modalConfirmBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                            modalConfirmBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                        }
+                        
+                        modalFeedback.classList.add('hidden');
+                        bookingModal.style.display = 'flex';
+                    });
+                });
+            }
+
+            modalConfirmBtn.addEventListener('click', function() {
+                const classId = this.dataset.classId;
+                const bookBtn = document.querySelector(`.book-btn[data-class-id="${classId}"]`);
+                const isBooking = this.textContent.includes('Booking');
+                
+                bookBtn.textContent = isBooking ? 'Cancel Booking' : 'Book Now';
+                bookBtn.classList.toggle('bg-indigo-600', isBooking);
+                bookBtn.classList.toggle('bg-gray-400', isBooking);
+                bookBtn.classList.toggle('hover:bg-indigo-700', isBooking);
+                
+                bookBtn.classList.toggle('bg-gray-400', !isBooking);
+                bookBtn.classList.toggle('bg-indigo-600', !isBooking);
+                bookBtn.classList.toggle('hover:bg-indigo-700', !isBooking);
+
+                modalFeedback.textContent = `Success! Your ${isBooking ? 'booking' : 'cancellation'} is confirmed. An email/SMS reminder has been sent.`;
+                modalFeedback.classList.remove('hidden');
+
+                setTimeout(() => {
+                    bookingModal.style.display = 'none';
+                }, 2000);
+            });
+            
+            document.getElementById('modal-cancel-btn').addEventListener('click', () => bookingModal.style.display = 'none');
+
+
+            // --- Shop Logic ---
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const originalText = this.textContent;
+                    this.textContent = 'Added!';
+                    this.classList.add('bg-green-500');
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.classList.remove('bg-green-500');
+                    }, 2000);
+                });
+            });
+
+            // --- Dashboard Logic ---
+            const logForm = document.getElementById('log-form');
+            logForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const activityDetails = document.getElementById('activity-details');
+                console.log('Logged:', activityDetails.value);
+                activityDetails.value = '';
+                progressChart.data.labels.push(new Date().toLocaleDateString());
+                progressChart.data.datasets[0].data.push(Math.floor(Math.random() * 30) + 60);
+                progressChart.update();
+            });
+
+            const ctx = document.getElementById('progress-chart').getContext('2d');
+            const progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: [75, 74, 74.5, 73, 72.5, 72],
+                        borderColor: '#4f46e5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: false } } }
+            });
+
+            // --- Initial Render and Setup ---
+            renderClasses();
+            applyFilters();
+            document.querySelector('.filter-btn[data-filter-group="type"][data-filter="all"]').classList.add('active', 'bg-indigo-600', 'text-white');
+            document.querySelector('.filter-btn[data-filter-group="time"][data-filter="all"]').classList.add('active', 'bg-indigo-600', 'text-white');
+        });
+    </script>
+</body>
+</html>
