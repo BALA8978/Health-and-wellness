@@ -29,23 +29,31 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
+    <!-- Main Container -->
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
 
+        <!-- Header -->
         <header class="text-center mb-8">
             <h1 class="text-4xl sm:text-5xl font-bold text-indigo-600">Fitness Hub</h1>
             <p class="text-gray-600 mt-2">Your complete solution for booking classes, tracking progress, and shopping for gear.</p>
         </header>
 
+        <!-- Navigation Tabs -->
         <div class="mb-8 flex flex-wrap justify-center border-b border-gray-200">
             <button data-tab="classes" class="tab-btn py-4 px-6 block hover:text-indigo-500 focus:outline-none text-indigo-600 border-b-2 font-medium border-indigo-600 active">Classes</button>
             <button data-tab="shop" class="tab-btn py-4 px-6 block hover:text-indigo-500 focus:outline-none text-gray-500">Shop</button>
             <button data-tab="dashboard" class="tab-btn py-4 px-6 block hover:text-indigo-500 focus:outline-none text-gray-500">Dashboard</button>
+            <button data-tab="trainer" class="tab-btn py-4 px-6 block hover:text-indigo-500 focus:outline-none text-gray-500">Trainer Portal</button>
         </div>
 
+        <!-- Tab Content -->
         <main>
+            <!-- Classes Section -->
             <div id="classes" class="tab-content">
+                <!-- Filter Controls -->
                 <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Filter by Type -->
                         <div>
                             <label class="font-semibold text-gray-700 block mb-2">Class Type</label>
                             <div id="type-filter" class="flex flex-wrap gap-2">
@@ -56,6 +64,7 @@
                             </div>
                         </div>
 
+                        <!-- Filter by Trainer -->
                         <div>
                             <label for="trainer-filter" class="font-semibold text-gray-700 block mb-2">Trainer</label>
                             <select id="trainer-filter" class="w-full p-2.5 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
@@ -67,6 +76,7 @@
                             </select>
                         </div>
 
+                        <!-- Filter by Time -->
                         <div>
                             <label class="font-semibold text-gray-700 block mb-2">Time of Day</label>
                             <div id="time-filter" class="flex flex-wrap gap-2">
@@ -79,8 +89,10 @@
                     </div>
                 </div>
 
+                <!-- Class Schedule Grid -->
                 <div id="class-schedule" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    </div>
+                    <!-- Class Cards will be dynamically populated here from the `classesData` array -->
+                </div>
                 <div id="no-results" class="hidden col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16">
                     <i class="fa-solid fa-magnifying-glass text-4xl text-gray-400"></i>
                     <h3 class="text-2xl font-semibold mt-4 text-gray-700">No Classes Found</h3>
@@ -88,14 +100,12 @@
                 </div>
             </div>
 
+            <!-- Shop Section -->
             <div id="shop" class="tab-content hidden">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Product Card 1 -->
                     <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1">
-<<<<<<< HEAD
-                        <img src="mats.jpg" alt="Yoga Mat" class="w-full h-64 object-cover">
-=======
                         <img src="https://placehold.co/600x600/E0E7FF/1F2937?text=Yoga+Mat" alt="Yoga Mat" class="w-full h-64 object-cover">
->>>>>>> 901630354e1d9ca89fe15e4b9b60d4dec1199864
                         <div class="p-6">
                             <h3 class="text-xl font-bold">Eco-Friendly Yoga Mat</h3>
                             <p class="text-gray-600 mt-2">Perfect for all types of yoga and pilates.</p>
@@ -105,12 +115,9 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Product Card 2 -->
                     <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1">
-<<<<<<< HEAD
-                        <img src="protein.jpg" alt="Protein Powder" class="w-full h-64 object-cover">
-=======
                         <img src="https://placehold.co/600x600/FEF3C7/1F2937?text=Protein" alt="Protein Powder" class="w-full h-64 object-cover">
->>>>>>> 901630354e1d9ca89fe15e4b9b60d4dec1199864
                         <div class="p-6">
                             <h3 class="text-xl font-bold">Whey Protein Powder</h3>
                             <p class="text-gray-600 mt-2">Vanilla flavor, 25g protein per serving.</p>
@@ -120,11 +127,14 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                    <!-- Add more products as needed -->
+                </div>
             </div>
 
+            <!-- Dashboard Section -->
             <div id="dashboard" class="tab-content hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Log Workout/Nutrition -->
                     <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg">
                         <h3 class="text-2xl font-bold mb-4">Log Today's Activity</h3>
                         <form id="log-form">
@@ -142,15 +152,81 @@
                             <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">Log Activity</button>
                         </form>
                     </div>
+                    <!-- Progress Analytics -->
                     <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg">
                         <h3 class="text-2xl font-bold mb-4">Your Progress</h3>
                         <canvas id="progress-chart"></canvas>
                     </div>
                 </div>
             </div>
+
+            <!-- Trainer Section -->
+            <div id="trainer" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Manage Schedule -->
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Manage Schedule</h3>
+                        <form id="create-class-form" class="mb-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <input type="text" id="class-name" placeholder="Class Name" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+                                <select id="class-type" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+                                    <option value="yoga">Yoga</option>
+                                    <option value="pilates">Pilates</option>
+                                    <option value="gym">Gym</option>
+                                </select>
+                                <input type="text" id="class-time-range" placeholder="e.g., 08:00 AM - 09:00 AM" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+                                <select id="class-time-of-day" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+                                    <option value="morning">Morning</option>
+                                    <option value="afternoon">Afternoon</option>
+                                    <option value="evening">Evening</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700">Add Class</button>
+                        </form>
+                        <h4 class="text-xl font-bold mb-3">Your Classes</h4>
+                        <div id="trainer-class-list" class="space-y-3">
+                            <!-- Trainer's classes will be listed here -->
+                        </div>
+                    </div>
+
+                    <!-- Profile and Payments -->
+                    <div class="space-y-8">
+                        <div class="bg-white p-6 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-bold mb-4">Payment Settings</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
+                                    <img src="https://placehold.co/100x30/FFFFFF/000000?text=Stripe" alt="Stripe" class="h-8">
+                                    <button class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg text-sm">Connected</button>
+                                </div>
+                                <div class="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
+                                    <img src="https://placehold.co/100x30/FFFFFF/000000?text=PayPal" alt="PayPal" class="h-8">
+                                    <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 text-sm">Connect</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-bold mb-4">Manage Profile & Certifications</h3>
+                            <form id="profile-form">
+                                <div class="mb-4">
+                                    <label for="trainer-bio" class="font-semibold text-gray-700 block mb-2">Your Bio</label>
+                                    <textarea id="trainer-bio" rows="4" class="w-full p-2.5 rounded-lg border border-gray-300" placeholder="Tell clients about yourself..."></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="certifications-upload" class="font-semibold text-gray-700 block mb-2">Upload Certifications</label>
+                                    <input type="file" id="certifications-upload" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                    <p id="upload-feedback" class="text-green-600 text-sm mt-2 hidden">File uploaded for verification!</p>
+                                </div>
+                                <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
+    <!-- Booking Modal -->
     <div id="booking-modal" class="fixed inset-0 z-50 items-center justify-center hidden modal-backdrop">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md m-4 p-8">
             <h2 class="text-2xl font-bold mb-4" id="modal-title">Book Class</h2>
@@ -168,75 +244,15 @@
         document.addEventListener('DOMContentLoaded', function () {
             // --- Data for Classes (can be managed by trainers) ---
             let classesData = [
-    {
-        id: 1,
-        type: 'yoga',
-        trainer: 'Samantha',
-        time: 'morning',
-        name: 'Sunrise Vinyasa Flow',
-        timeRange: '05:00 AM - 06:00 AM',
-        days: 'Monday, Wednesday',
-        img: 'yoga.jpg',
-        color: 'indigo'
-    },
-    {
-        id: 2,
-        type: 'gym',
-        trainer: 'Ben',
-        time: 'evening',
-        name: 'Full Body HIIT',
-        timeRange: '05:30 AM - 08:00 AM',
-        days: 'Tuesday, Thursday',
-        img: 'gym.jpg',
-        color: 'red'
-    },
-    {
-        id: 3,
-        type: 'pilates',
-        trainer: 'Chloe',
-        time: 'afternoon',
-        name: 'Core & Stability',
-        timeRange: '06:00 AM- 09:00 AM',
-        days: 'Monday, Friday',
-        img: 'pilate.jpg',
-        color: 'blue'
-    },
-    {
-        id: 4,
-        type: 'gym',
-        trainer: 'Ben',
-        time: 'morning',
-        name: 'Strength Training',
-        timeRange: '05:00 PM - 07:00 PM',
-        days: 'Wednesday, Friday',
-        img: 'strenthgym.jpg',
-        color: 'red'
-    },
-    {
-        id: 5,
-        type: 'yoga',
-        trainer: 'Alex',
-        time: 'evening',
-        name: 'Restorative Yoga',
-        timeRange: '05:00 PM - 08:00 PM',
-        days: 'Sunday',
-        img: 'RestorativeYoga.jpg',
-        color: 'indigo'
-    },
-    {
-        id: 6,
-        type: 'pilates',
-        trainer: 'Chloe',
-        time: 'morning',
-        name: 'Reformer Essentials',
-        timeRange: '05:00 PM - 08:00 PM',
-        days: 'Tuesday, Thursday',
-        img: 'Reformer.jpg',
-        color: 'blue'
-    }
-];
+                { id: 1, type: 'yoga', trainer: 'Samantha', time: 'morning', name: 'Sunrise Vinyasa Flow', timeRange: '07:00 AM - 08:00 AM', days: 'Monday, Wednesday', img: 'https://placehold.co/600x400/A7F3D0/1F2937?text=Yoga+Flow', color: 'indigo' },
+                { id: 2, type: 'gym', trainer: 'Ben', time: 'evening', name: 'Full Body HIIT', timeRange: '06:30 PM - 07:15 PM', days: 'Tuesday, Thursday', img: 'https://placehold.co/600x400/FECACA/1F2937?text=HIIT', color: 'red' },
+                { id: 3, type: 'pilates', trainer: 'Chloe', time: 'afternoon', name: 'Core & Stability', timeRange: '12:00 PM - 12:50 PM', days: 'Monday, Friday', img: 'https://placehold.co/600x400/BFDBFE/1F2937?text=Pilates', color: 'blue' },
+                { id: 4, type: 'gym', trainer: 'Ben', time: 'morning', name: 'Strength Training', timeRange: '09:00 AM - 10:00 AM', days: 'Wednesday, Friday', img: 'https://placehold.co/600x400/FECACA/1F2937?text=Strength', color: 'red' },
+                { id: 5, type: 'yoga', trainer: 'Alex', time: 'evening', name: 'Restorative Yoga', timeRange: '07:30 PM - 08:30 PM', days: 'Sunday', img: 'https://placehold.co/600x400/A7F3D0/1F2937?text=Restorative+Yoga', color: 'indigo' },
+                { id: 6, type: 'pilates', trainer: 'Chloe', time: 'morning', name: 'Reformer Essentials', timeRange: '10:00 AM - 10:50 AM', days: 'Tuesday, Thursday', img: 'https://placehold.co/600x400/BFDBFE/1F2937?text=Reformer', color: 'blue' }
+            ];
 
- classScheduleContainer = document.getElementById('class-schedule');
+            const classScheduleContainer = document.getElementById('class-schedule');
             
             // --- Populate Class Cards ---
             function renderClasses() {
@@ -414,8 +430,68 @@
                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: false } } }
             });
 
+            // --- Trainer Portal Logic ---
+            const createClassForm = document.getElementById('create-class-form');
+            const trainerClassList = document.getElementById('trainer-class-list');
+            const profileForm = document.getElementById('profile-form');
+            const uploadFeedback = document.getElementById('upload-feedback');
+
+            function renderTrainerClasses() {
+                trainerClassList.innerHTML = '';
+                // Assuming one trainer for this demo, showing all classes
+                classesData.forEach(cls => {
+                    const el = document.createElement('div');
+                    el.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+                    el.innerHTML = `
+                        <div>
+                            <p class="font-semibold">${cls.name}</p>
+                            <p class="text-sm text-gray-500">${cls.type} - ${cls.timeRange}</p>
+                        </div>
+                        <button class="text-red-500 hover:text-red-700" data-delete-id="${cls.id}"><i class="fa-solid fa-trash"></i></button>
+                    `;
+                    trainerClassList.appendChild(el);
+                });
+            }
+
+            createClassForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newClass = {
+                    id: Date.now(),
+                    name: document.getElementById('class-name').value,
+                    type: document.getElementById('class-type').value,
+                    time: document.getElementById('class-time-of-day').value,
+                    timeRange: document.getElementById('class-time-range').value,
+                    trainer: 'Ben', // Hardcoded for demo
+                    days: 'TBD',
+                    img: `https://placehold.co/600x400/cccccc/1F2937?text=${document.getElementById('class-name').value.replace(' ','+')}`,
+                    color: 'gray'
+                };
+                classesData.push(newClass);
+                renderClasses();
+                renderTrainerClasses();
+                createClassForm.reset();
+            });
+            
+            trainerClassList.addEventListener('click', function(e){
+                if(e.target.closest('[data-delete-id]')) {
+                    const idToDelete = e.target.closest('[data-delete-id]').dataset.deleteId;
+                    classesData = classesData.filter(cls => cls.id != idToDelete);
+                    renderClasses();
+                    renderTrainerClasses();
+                }
+            });
+
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, you would handle the form data and file upload
+                uploadFeedback.classList.remove('hidden');
+                setTimeout(() => uploadFeedback.classList.add('hidden'), 3000);
+            });
+
+
             // --- Initial Render and Setup ---
             renderClasses();
+            renderTrainerClasses();
             applyFilters();
             document.querySelector('.filter-btn[data-filter-group="type"][data-filter="all"]').classList.add('active', 'bg-indigo-600', 'text-white');
             document.querySelector('.filter-btn[data-filter-group="time"][data-filter="all"]').classList.add('active', 'bg-indigo-600', 'text-white');
