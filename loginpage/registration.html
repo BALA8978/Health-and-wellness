@@ -10,7 +10,7 @@
         body {
             font-family: 'Inter', sans-serif;
             /* Background image for gym, yoga, pilates theme */
-            background-image: url('photo,jpg');
+            background-image: url('photo.jpg'); /* Ensure this path is correct */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -61,7 +61,7 @@
             text-align: center;
         }
         .left-panel {
-            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            background: linear-gradient(45deg, #69e89a, #69e89a);
             color: white;
             padding: 3rem;
             border-top-left-radius: 15px;
@@ -78,10 +78,10 @@
             border-top-right-radius: 15px;
             border-bottom-right-radius: 15px;
         }
-	#signupModal .modal-content {
-    max-height: 80vh; /* Limits height to 80% of viewport */
-    overflow-y: auto; /* Enables vertical scroll if content overflows */
-}
+        #signupModal .modal-content {
+            max-height: 80vh; /* Limits height to 80% of viewport */
+            overflow-y: auto; /* Enables vertical scroll if content overflows */
+        }
 
         @media (max-width: 767px) {
             .right-panel {
@@ -90,7 +90,7 @@
             }
         }
         .btn-primary {
-            background-color: #6366f1;
+            background-color: #69e89a;
             color: white;
             padding: 0.5rem 1.25rem; /* Decreased padding */
             border-radius: 10px;
@@ -98,7 +98,7 @@
             font-size: 0.9rem; /* Added font-size */
         }
         .btn-primary:hover {
-            background-color: #4f46e5;
+            background-color: #69e89a;
         }
         .btn-secondary {
             background-color: #e0e7ff;
@@ -106,7 +106,7 @@
             padding: 0.5rem 1.25rem; /* Decreased padding */
             border-radius: 10px;
             transition: background-color 0.3s ease;
-            border: 1px solid #6366f1;
+            border: 1px solid #69e89a;
             font-size: 0.9rem; /* Added font-size */
         }
         .btn-secondary:hover {
@@ -180,11 +180,11 @@
         }
         /* Specific styles for social buttons */
         .google-signin-btn {
-            background-color: #4285f4;
+            background-color: #69e89a;
             color: white;
         }
         .google-signin-btn:hover {
-            background-color: #357ae8;
+            background-color: #69e89a;
         }
         .instagram-signin-btn {
             background-color: #E1306C;
@@ -200,17 +200,27 @@
         .snapchat-signin-btn:hover {
             background-color: #e0db00;
         }
+        /* Message div styling */
+        .message-div {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .message-div.success {
+            color: green;
+        }
+        .message-div.error {
+            color: red;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="left-panel">
-    <h1 class="text-4xl font-bold mb-4">Welcome to VitalFit!</h1>
-    <p class="text-lg mb-8">Join our community to track your fitness, book classes, and achieve your wellness goals.</p>
-    <button id="signupBtn" class="btn-secondary font-semibold">Sign Up Now</button>
-</div>
-
-
+            <h1 class="text-4xl font-bold mb-4">Welcome to VitalFit!</h1>
+            <p class="text-lg mb-8">Join our community to track your fitness, book classes, and achieve your wellness goals.</p>
+            <button id="signupBtn" class="btn-secondary font-semibold">Sign Up Now</button>
+        </div>
 
         <div class="right-panel">
             <h2 class="text-3xl font-bold mb-6 text-gray-800">Login</h2>
@@ -226,9 +236,14 @@
         <div class="modal-content">
             <button class="modal-close-btn" onclick="closeModal()">&times;</button>
             <h3 id="modalTitle" class="text-2xl font-bold mb-6 text-gray-800">Login</h3>
-            <form class="flex flex-col items-center w-full">
-                <input type="text" id="emailPhone" placeholder="Email or Phone Number" class="input-field">
-                <input type="password" id="password" placeholder="Password" class="input-field">
+            <form id="login-form" class="flex flex-col items-center w-full" action="login.php" method="post">
+                <!-- Added 'name' attributes for PHP to receive data -->
+                <input type="email" id="emailPhone" name="email" placeholder="Email Address" class="input-field" required>
+                <input type="password" id="password" name="password" placeholder="Password" class="input-field" required>
+                
+                <!-- Message div for login feedback -->
+                <div id="login-message" class="message-div"></div>
+
                 <button type="submit" class="btn-primary w-full font-semibold mb-4">Sign In</button>
                 <div class="text-gray-500 mb-4">- OR -</div>
                 <button type="button" class="social-signin-btn google-signin-btn">
@@ -252,19 +267,24 @@
         <div class="modal-content">
             <button class="modal-close-btn" onclick="closeModal()">&times;</button>
             <h3 class="text-2xl font-bold mb-6 text-gray-800">Create Account</h3>
-            <form class="flex flex-col items-center w-full">
-                <input type="text" id="signupName" placeholder="Full Name" class="input-field">
-                <input type="email" id="signupEmail" placeholder="Email Address" class="input-field">
-                <input type="password" id="signupPassword" placeholder="Password" class="input-field">
-                <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" class="input-field">
-                <input type="number" id="signupAge" placeholder="Age" class="input-field">
-                <input type="number" id="signupHeight" placeholder="Height (cm)" class="input-field">
-                <input type="number" id="signupWeight" placeholder="Weight (kg)" class="input-field">
-                <select id="userType" class="input-field">
+            <form id="signup-form" class="flex flex-col items-center w-full" action="register.php" method="post">
+                <!-- Added 'name' attributes for PHP to receive data -->
+                <input type="text" id="signupName" name="signupName" placeholder="Full Name" class="input-field" required>
+                <input type="email" id="signupEmail" name="signupEmail" placeholder="Email Address" class="input-field" required>
+                <input type="password" id="signupPassword" name="signupPassword" placeholder="Password" class="input-field" required>
+                <input type="password" id="signupConfirmPassword" name="signupConfirmPassword" placeholder="Confirm Password" class="input-field" required>
+                <input type="number" id="signupAge" name="signupAge" placeholder="Age" class="input-field" required>
+                <input type="number" id="signupHeight" name="signupHeight" placeholder="Height (cm)" class="input-field" required>
+                <input type="number" id="signupWeight" name="signupWeight" placeholder="Weight (kg)" class="input-field" required>
+                <select id="userType" name="userType" class="input-field" required>
                     <option value="">Select User Type</option>
                     <option value="customer">Customer</option>
                     <option value="trainer">Trainer</option>
                 </select>
+                
+                <!-- Message div for signup feedback -->
+                <div id="signup-message" class="message-div"></div>
+
                 <button type="submit" class="btn-primary w-full font-semibold mb-4">Register</button>
                 <div class="text-gray-500 mb-4">- OR -</div>
                 <button type="button" class="social-signin-btn google-signin-btn">
@@ -290,20 +310,42 @@
         const customerLoginBtn = document.getElementById('customerLoginBtn');
         const trainerLoginBtn = document.getElementById('trainerLoginBtn');
         const signupBtn = document.getElementById('signupBtn');
-        const modalTitle = document.getElementById('modalTitle');
+        const modalTitle = document.getElementById('modalTitle'); // This is for the login modal title
+
+        // Get form elements and message divs
+        const loginForm = document.getElementById('login-form');
+        const loginMessageDiv = document.getElementById('login-message');
+        const signupForm = document.getElementById('signup-form');
+        const signupMessageDiv = document.getElementById('signup-message');
 
         // Function to open a specific modal
         function openModal(modalElement, title = 'Login') {
-            modalTitle.textContent = title;
+            // Update the title of the login modal only if it's the target modal
+            if (modalElement === loginModal) {
+                modalTitle.textContent = title;
+            } else {
+                // For signup modal, the title is static in HTML, or you can add a separate ID for its title
+                // For now, we'll assume modalTitle specifically refers to the login modal's title.
+            }
             loginModal.classList.remove('show'); // Hide login modal if open
             signupModal.classList.remove('show'); // Hide signup modal if open
             modalElement.classList.add('show');
+            // Clear any previous messages when opening a modal
+            loginMessageDiv.textContent = '';
+            loginMessageDiv.classList.remove('success', 'error');
+            signupMessageDiv.textContent = '';
+            signupMessageDiv.classList.remove('success', 'error');
         }
 
         // Function to close any open modal
         function closeModal() {
             loginModal.classList.remove('show');
             signupModal.classList.remove('show');
+            // Clear messages when closing modals
+            loginMessageDiv.textContent = '';
+            loginMessageDiv.classList.remove('success', 'error');
+            signupMessageDiv.textContent = '';
+            signupMessageDiv.classList.remove('success', 'error');
         }
 
         // Event listeners for login buttons
@@ -340,39 +382,137 @@
                 closeModal();
             }
         });
+
+        // --- AJAX Form Submission Handlers ---
+
+        // Login Form Submission
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(loginForm);
+                const action = loginForm.getAttribute('action'); // Should be 'login.php'
+                const submitButton = loginForm.querySelector('button[type="submit"]');
+
+                loginMessageDiv.textContent = 'Logging in...';
+                loginMessageDiv.classList.remove('success', 'error');
+                loginMessageDiv.style.color = 'blue'; // Temporary color for loading
+                if (submitButton) submitButton.disabled = true;
+
+                try {
+                    const response = await fetch(action, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) { // Check for HTTP errors (e.g., 404, 500)
+                        const errorText = await response.text();
+                        console.error("HTTP Error Status:", response.status);
+                        console.error("HTTP Error Response Body:", errorText);
+                        throw new Error(`Server responded with status ${response.status}. Check network tab.`);
+                    }
+
+                    const result = await response.json(); // Parse JSON response
+                    console.log("Login server response:", result); // Debugging
+
+                    if (result.success) {
+                        loginMessageDiv.textContent = result.message;
+                        loginMessageDiv.classList.remove('error');
+                        loginMessageDiv.classList.add('success');
+
+                        // Show pop-up and redirect
+                        if (confirm(result.message + "\nClick OK to redirect.")) {
+                            // Determine redirect page based on user role (if available)
+                            let redirectPage = 'customer.html'; // Default for customer
+                            if (result.redirect_role === 'trainer') {
+                                redirectPage = 'trainer.html'; // Redirect to trainer page
+                            }
+                            window.location.href = redirectPage;
+                        } else {
+                            // If user cancels pop-up, just keep success message on screen
+                            loginMessageDiv.textContent = result.message + " You can navigate manually.";
+                        }
+                    } else {
+                        loginMessageDiv.textContent = result.message;
+                        loginMessageDiv.classList.remove('success');
+                        loginMessageDiv.classList.add('error');
+                        // Clear password field on failure for security
+                        loginForm.querySelector('input[name="password"]').value = '';
+                    }
+
+                } catch (error) {
+                    console.error('Error during login:', error);
+                    loginMessageDiv.textContent = 'An unexpected error occurred. Please try again.';
+                    loginMessageDiv.classList.remove('success');
+                    loginMessageDiv.classList.add('error');
+                } finally {
+                    if (submitButton) submitButton.disabled = false;
+                    loginMessageDiv.style.color = ''; // Reset temporary color
+                }
+            });
+        }
+
+        // Signup Form Submission
+        if (signupForm) {
+            signupForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(signupForm);
+                const action = signupForm.getAttribute('action'); // Should be 'register.php'
+                const submitButton = signupForm.querySelector('button[type="submit"]');
+
+                signupMessageDiv.textContent = 'Registering...';
+                signupMessageDiv.classList.remove('success', 'error');
+                signupMessageDiv.style.color = 'blue'; // Temporary color for loading
+                if (submitButton) submitButton.disabled = true;
+
+                try {
+                    const response = await fetch(action, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) { // Check for HTTP errors
+                        const errorText = await response.text();
+                        console.error("HTTP Error Status:", response.status);
+                        console.error("HTTP Error Response Body:", errorText);
+                        throw new Error(`Server responded with status ${response.status}. Check network tab.`);
+                    }
+
+                    const result = await response.json(); // Parse JSON response
+                    console.log("Signup server response:", result); // Debugging
+
+                    if (result.success) {
+                        signupMessageDiv.textContent = result.message;
+                        signupMessageDiv.classList.remove('error');
+                        signupMessageDiv.classList.add('success');
+                        signupForm.reset(); // Clear form on successful registration
+                        // Optionally, auto-switch to login modal after successful registration
+                        setTimeout(() => {
+                            closeModal();
+                            openModal(loginModal, 'Login');
+                            loginMessageDiv.textContent = "Registration successful! Please log in.";
+                            loginMessageDiv.classList.add('success');
+                        }, 1500);
+
+                    } else {
+                        signupMessageDiv.textContent = result.message;
+                        signupMessageDiv.classList.remove('success');
+                        signupMessageDiv.classList.add('error');
+                        // Do not clear password fields on failure for easier correction
+                    }
+
+                } catch (error) {
+                    console.error('Error during registration:', error);
+                    signupMessageDiv.textContent = 'An unexpected error occurred. Please try again.';
+                    signupMessageDiv.classList.remove('success');
+                    signupMessageDiv.classList.add('error');
+                } finally {
+                    if (submitButton) submitButton.disabled = false;
+                    signupMessageDiv.style.color = ''; // Reset temporary color
+                }
+            });
+        }
     </script>
-	<script>
-    // Get the social sign-in buttons
-    const googleButtons = document.querySelectorAll('.google-signin-btn');
-    const instagramButtons = document.querySelectorAll('.instagram-signin-btn');
-    const snapchatButtons = document.querySelectorAll('.snapchat-signin-btn');
-
-    // Quotes
-    const quotes = {
-        google: "“The journey of a thousand miles begins with one step.” – Lao Tzu",
-        instagram: "“Your body can stand almost anything. It’s your mind that you have to convince.”",
-        snapchat: "“Fitness is not about being better than someone else. It’s about being better than you used to be.”"
-    };
-
-    // Show alert on click with respective quote
-    googleButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            alert(quotes.google);
-        });
-    });
-
-    instagramButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            alert(quotes.instagram);
-        });
-    });
-
-    snapchatButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            alert(quotes.snapchat);
-        });
-    });
-</script>
-
 </body>
 </html>

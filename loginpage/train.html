@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trainer Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body class="bg-gray-100 p-8 font-sans">
+
+  <h1 class="text-4xl font-bold text-indigo-600 mb-8 text-center">Trainer Portal</h1>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- Manage Schedule -->
+    <div class="bg-white p-6 rounded-2xl shadow-lg">
+      <h2 class="text-2xl font-bold mb-4">Manage Schedule</h2>
+      <form id="create-class-form" class="mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <input type="text" id="class-name" placeholder="Class Name" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+          <select id="class-type" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+            <option value="yoga">Yoga</option>
+            <option value="pilates">Pilates</option>
+            <option value="gym">Gym</option>
+          </select>
+          <input type="text" id="class-time-range" placeholder="e.g., 08:00 AM - 09:00 AM" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+          <select id="class-time-of-day" class="w-full p-2.5 rounded-lg border border-gray-300" required>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700">Add Class</button>
+      </form>
+
+      <h3 class="text-xl font-bold mb-3">Your Classes</h3>
+      <div id="trainer-class-list" class="space-y-3">
+        <!-- Trainer's classes will be listed here -->
+      </div>
+    </div>
+
+    <!-- Profile and Payments -->
+    <div class="space-y-8">
+      <!-- Payment -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg">
+        <h2 class="text-2xl font-bold mb-4">Payment Settings</h2>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
+            <img src="https://placehold.co/100x30/FFFFFF/000000?text=Stripe" alt="Stripe" class="h-8">
+            <button class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg text-sm">Connected</button>
+          </div>
+          <div class="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
+            <img src="https://placehold.co/100x30/FFFFFF/000000?text=PayPal" alt="PayPal" class="h-8">
+            <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 text-sm">Connect</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg">
+        <h2 class="text-2xl font-bold mb-4">Manage Profile & Certifications</h2>
+        <form id="profile-form">
+          <div class="mb-4">
+            <label for="trainer-bio" class="font-semibold text-gray-700 block mb-2">Your Bio</label>
+            <textarea id="trainer-bio" rows="4" class="w-full p-2.5 rounded-lg border border-gray-300" placeholder="Tell clients about yourself..."></textarea>
+          </div>
+          <div class="mb-4">
+            <label for="certifications-upload" class="font-semibold text-gray-700 block mb-2">Upload Certifications</label>
+            <input type="file" id="certifications-upload" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+            <p id="upload-feedback" class="text-green-600 text-sm mt-2 hidden">File uploaded for verification!</p>
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700">Update Profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let classesData = [];
+
+    const createClassForm = document.getElementById('create-class-form');
+    const trainerClassList = document.getElementById('trainer-class-list');
+    const profileForm = document.getElementById('profile-form');
+    const uploadFeedback = document.getElementById('upload-feedback');
+
+    function renderTrainerClasses() {
+      trainerClassList.innerHTML = '';
+      classesData.forEach(cls => {
+        const el = document.createElement('div');
+        el.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+        el.innerHTML = `
+          <div>
+            <p class="font-semibold">${cls.name}</p>
+            <p class="text-sm text-gray-500">${cls.type} - ${cls.timeRange}</p>
+          </div>
+          <button class="text-red-500 hover:text-red-700" data-delete-id="${cls.id}"><i class="fa-solid fa-trash"></i></button>
+        `;
+        trainerClassList.appendChild(el);
+      });
+    }
+
+    createClassForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newClass = {
+        id: Date.now(),
+        name: document.getElementById('class-name').value,
+        type: document.getElementById('class-type').value,
+        time: document.getElementById('class-time-of-day').value,
+        timeRange: document.getElementById('class-time-range').value,
+        trainer: 'Ben', // Hardcoded
+        days: 'TBD',
+        img: '',
+        color: 'gray'
+      };
+      classesData.push(newClass);
+      renderTrainerClasses();
+      createClassForm.reset();
+    });
+
+    trainerClassList.addEventListener('click', function(e){
+      if(e.target.closest('[data-delete-id]')) {
+        const idToDelete = e.target.closest('[data-delete-id]').dataset.deleteId;
+        classesData = classesData.filter(cls => cls.id != idToDelete);
+        renderTrainerClasses();
+      }
+    });
+
+    profileForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      uploadFeedback.classList.remove('hidden');
+      setTimeout(() => uploadFeedback.classList.add('hidden'), 3000);
+    });
+
+    renderTrainerClasses();
+  </script>
+
+</body>
+</html>
