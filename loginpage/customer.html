@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Class Schedule</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for a little extra polish */
+        .filter-btn.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Main Container -->
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl sm:text-5xl font-bold text-indigo-600">Find Your Class</h1>
+            <p class="text-gray-600 mt-2">Browse our schedule and book your next workout</p>
+        </header>
+
+        <!-- Filter Controls -->
+        <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Filter by Type -->
+                <div>
+                    <label class="font-semibold text-gray-700 block mb-2">Class Type</label>
+                    <div id="type-filter" class="flex flex-wrap gap-2">
+                        <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="type" data-filter="all">All</button>
+                        <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="type" data-filter="yoga">Yoga</button>
+                        <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="type" data-filter="pilates">Pilates</button>
+                        <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="type" data-filter="gym">Gym</button>
+                    </div>
+                </div>
+
+                <!-- Filter by Trainer -->
+                <div>
+                    <label for="trainer-filter" class="font-semibold text-gray-700 block mb-2">Trainer</label>
+                    <select id="trainer-filter" class="w-full p-2.5 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                        <option value="all">All Trainers</option>
+                        <option value="Alex">Alex Morgan</option>
+                        <option value="Samantha">Samantha Ray</option>
+                        <option value="Ben">Ben Carter</option>
+                        <option value="Chloe">Chloe Davis</option>
+                    </select>
+                </div>
+
+                <!-- Filter by Time -->
+                <div>
+                    <label class="font-semibold text-gray-700 block mb-2">Time of Day</label>
+                    <div id="time-filter" class="flex flex-wrap gap-2">
+                         <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="time" data-filter="all">Any Time</button>
+                        <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="time" data-filter="morning">Morning</button>
+                        <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="time" data-filter="afternoon">Afternoon</button>
+                        <button class="filter-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-indigo-50 transition-colors" data-filter-group="time" data-filter="evening">Evening</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Class Schedule Grid -->
+        <div id="class-schedule" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Class Card 1: Yoga -->
+            <div class="class-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1" data-type="yoga" data-trainer="Samantha" data-time="morning">
+                <img src="https://placehold.co/600x400/A7F3D0/1F2937?text=Yoga+Flow" alt="Yoga Class" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <p class="text-sm text-indigo-500 font-semibold">Yoga</p>
+                    <h3 class="text-xl font-bold mt-1">Sunrise Vinyasa Flow</h3>
+                    <div class="text-gray-600 mt-3 space-y-2">
+                        <p><i class="fa-solid fa-user mr-2 w-4 text-center"></i>Samantha Ray</p>
+                        <p><i class="fa-solid fa-clock mr-2 w-4 text-center"></i>07:00 AM - 08:00 AM</p>
+                        <p><i class="fa-solid fa-calendar-day mr-2 w-4 text-center"></i>Monday, Wednesday</p>
+                    </div>
+                    <button class="w-full mt-4 bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">Book Now</button>
+                </div>
+            </div>
+
+            <!-- Class Card 2: Gym -->
+            <div class="class-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1" data-type="gym" data-trainer="Ben" data-time="evening">
+                <img src="https://placehold.co/600x400/FECACA/1F2937?text=HIIT" alt="Gym Class" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <p class="text-sm text-red-500 font-semibold">Gym</p>
+                    <h3 class="text-xl font-bold mt-1">Full Body HIIT</h3>
+                    <div class="text-gray-600 mt-3 space-y-2">
+                        <p><i class="fa-solid fa-user mr-2 w-4 text-center"></i>Ben Carter</p>
+                        <p><i class="fa-solid fa-clock mr-2 w-4 text-center"></i>06:30 PM - 07:15 PM</p>
+                        <p><i class="fa-solid fa-calendar-day mr-2 w-4 text-center"></i>Tuesday, Thursday</p>
+                    </div>
+                    <button class="w-full mt-4 bg-red-500 text-white font-semibold py-2.5 rounded-lg hover:bg-red-600 transition-colors">Book Now</button>
+                </div>
+            </div>
+            
+            <!-- Class Card 3: Pilates -->
+            <div class="class-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1" data-type="pilates" data-trainer="Chloe" data-time="afternoon">
+                <img src="https://placehold.co/600x400/BFDBFE/1F2937?text=Pilates" alt="Pilates Class" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <p class="text-sm text-blue-500 font-semibold">Pilates</p>
+                    <h3 class="text-xl font-bold mt-1">Core & Stability</h3>
+                    <div class="text-gray-600 mt-3 space-y-2">
+                        <p><i class="fa-solid fa-user mr-2 w-4 text-center"></i>Chloe Davis</p>
+                        <p><i class="fa-solid fa-clock mr-2 w-4 text-center"></i>12:00 PM - 12:50 PM</p>
+                        <p><i class="fa-solid fa-calendar-day mr-2 w-4 text-center"></i>Monday, Friday</p>
+                    </div>
+                    <button class="w-full mt-4 bg-blue-500 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-600 transition-colors">Book Now</button>
+                </div>
+            </div>
+
+            <!-- Class Card 4: Gym -->
+            <div class="class-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1" data-type="gym" data-trainer="Ben" data-time="morning">
+                <img src="https://placehold.co/600x400/FECACA/1F2937?text=Strength" alt="Gym Class" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <p class="text-sm text-red-500 font-semibold">Gym</p>
+                    <h3 class="text-xl font-bold mt-1">Strength Training</h3>
+                    <div class="text-gray-600 mt-3 space-y-2">
+                        <p><i class="fa-solid fa-user mr-2 w-4 text-center"></i>Ben Carter</p>
+                        <p><i class="fa-solid fa-clock mr-2 w-4 text-center"></i>09:00 AM - 10:00 AM</p>
+                        <p><i class="fa-solid fa-calendar-day mr-2 w-4 text-center"></i>Wednesday, Friday</p>
+                    </div>
+                    <button class="w-full mt-4 bg-red-500 text-white font-semibold py-2.5 rounded-lg hover:bg-red-600 transition-colors">Book Now</button>
+                </div>
+            </div>
+
+            <!-- Class Card 5: Yoga -->
+            <div class="class-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1" data-type="yoga" data-trainer="Alex" data-time="evening">
+                <img src="https://placehold.co/600x400/A7F3D0/1F2937?text=Restorative+Yoga" alt="Yoga Class" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <p class="text-sm text-indigo-500 font-semibold">Yoga</p>
+                    <h3 class="text-xl font-bold mt-1">Restorative Yoga</h3>
+                    <div class="text-gray-600 mt-3 space-y-2">
+                        <p><i class="fa-solid fa-user mr-2 w-4 text-center"></i>Alex Morgan</p>
+                        <p><i class="fa-solid fa-clock mr-2 w-4 text-center"></i>07:30 PM - 08:30 PM</p>
+                        <p><i class="fa-solid fa-calendar-day mr-2 w-4 text-center"></i>Sunday</p>
+                    </div>
+                    <button class="w-full mt-4 bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">Book Now</button>
+                </div>
+            </div>
+
+            <!-- Class Card 6: Pilates -->
+            <div class="class-card bg-white rounded-2xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-1" data-type="pilates" data-trainer="Chloe" data-time="morning">
+                <img src="https://placehold.co/600x400/BFDBFE/1F2937?text=Reformer" alt="Pilates Class" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <p class="text-sm text-blue-500 font-semibold">Pilates</p>
+                    <h3 class="text-xl font-bold mt-1">Reformer Essentials</h3>
+                    <div class="text-gray-600 mt-3 space-y-2">
+                        <p><i class="fa-solid fa-user mr-2 w-4 text-center"></i>Chloe Davis</p>
+                        <p><i class="fa-solid fa-clock mr-2 w-4 text-center"></i>10:00 AM - 10:50 AM</p>
+                        <p><i class="fa-solid fa-calendar-day mr-2 w-4 text-center"></i>Tuesday, Thursday</p>
+                    </div>
+                    <button class="w-full mt-4 bg-blue-500 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-600 transition-colors">Book Now</button>
+                </div>
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="no-results" class="hidden col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16">
+                <i class="fa-solid fa-magnifying-glass text-4xl text-gray-400"></i>
+                <h3 class="text-2xl font-semibold mt-4 text-gray-700">No Classes Found</h3>
+                <p class="text-gray-500 mt-2">Try adjusting your filters to find available classes.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // State for current filters
+            const filters = {
+                type: 'all',
+                trainer: 'all',
+                time: 'all'
+            };
+
+            const classCards = document.querySelectorAll('.class-card');
+            const noResultsMessage = document.getElementById('no-results');
+
+            // --- Filter Logic ---
+            function applyFilters() {
+                let hasVisibleCards = false;
+                classCards.forEach(card => {
+                    const typeMatch = filters.type === 'all' || card.dataset.type === filters.type;
+                    const trainerMatch = filters.trainer === 'all' || card.dataset.trainer === filters.trainer;
+                    const timeMatch = filters.time === 'all' || card.dataset.time === filters.time;
+
+                    if (typeMatch && trainerMatch && timeMatch) {
+                        card.style.display = 'block';
+                        hasVisibleCards = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Show or hide the 'no results' message
+                noResultsMessage.style.display = hasVisibleCards ? 'none' : 'block';
+            }
+
+            // --- Event Listeners ---
+
+            // For button-based filters (Type and Time)
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const filterGroup = button.dataset.filterGroup;
+                    const filterValue = button.dataset.filter;
+                    
+                    // Update state
+                    filters[filterGroup] = filterValue;
+
+                    // Update active class for visual feedback
+                    document.querySelectorAll(`.filter-btn[data-filter-group="${filterGroup}"]`).forEach(btn => {
+                        btn.classList.remove('active', 'bg-indigo-600', 'text-white');
+                    });
+                    button.classList.add('active', 'bg-indigo-600', 'text-white');
+
+                    applyFilters();
+                });
+            });
+
+            // For trainer dropdown filter
+            document.getElementById('trainer-filter').addEventListener('change', (e) => {
+                filters.trainer = e.target.value;
+                applyFilters();
+            });
+            
+            // --- Initial Setup ---
+            // Set the 'All' and 'Any Time' buttons as active initially
+            document.querySelector('.filter-btn[data-filter-group="type"][data-filter="all"]').classList.add('active', 'bg-indigo-600', 'text-white');
+            document.querySelector('.filter-btn[data-filter-group="time"][data-filter="all"]').classList.add('active', 'bg-indigo-600', 'text-white');
+
+        });
+    </script>
+
+</body>
+</html>

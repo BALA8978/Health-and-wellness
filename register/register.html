@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalFit - Login/Signup</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Background image for gym, yoga, pilates theme */
+            background-image: url('photo.jpg'); /* Ensure this path is correct */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Ensures background stays fixed during scroll */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            position: relative; /* Needed for overlay */
+            overflow: hidden; /* Hide overflow from potential background image issues */
+        }
+        /* Overlay for better text readability */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay */
+            z-index: 0; /* Behind content */
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 90%;
+            max-width: 700px; /* Decreased from 900px to 700px */
+            display: flex;
+            flex-direction: column;
+            position: relative; /* Ensure container is above the overlay */
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+        .left-panel, .right-panel {
+            padding: 2.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .left-panel {
+            background: linear-gradient(45deg, #69e89a, #69e89a);
+            color: white;
+            padding: 3rem;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
+        @media (max-width: 767px) {
+            .left-panel {
+                border-bottom-left-radius: 0;
+                border-top-right-radius: 15px;
+            }
+        }
+        .right-panel {
+            background-color: #ffffff;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        #signupModal .modal-content {
+            max-height: 80vh; /* Limits height to 80% of viewport */
+            overflow-y: auto; /* Enables vertical scroll if content overflows */
+        }
+
+        @media (max-width: 767px) {
+            .right-panel {
+                border-top-right-radius: 0;
+                border-bottom-left-radius: 15px;
+            }
+        }
+        .btn-primary {
+            background-color: #69e89a;
+            color: white;
+            padding: 0.5rem 1.25rem; /* Decreased padding */
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+            font-size: 0.9rem; /* Added font-size */
+        }
+        .btn-primary:hover {
+            background-color: #69e89a;
+        }
+        .btn-secondary {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+            padding: 0.5rem 1.25rem; /* Decreased padding */
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+            border: 1px solid #69e89a;
+            font-size: 0.9rem; /* Added font-size */
+        }
+        .btn-secondary:hover {
+            background-color: #c7d2fe;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+        }
+        .input-field {
+            width: 100%;
+            padding: 0.5rem; /* Decreased from 0.75rem */
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem; /* Decreased from 1rem */
+        }
+        .social-signin-btn {
+            padding: 0.5rem; /* Decreased padding */
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            font-size: 0.875rem; /* Decreased font-size */
+            transition: background-color 0.3s ease;
+            margin-bottom: 0.75rem; /* Added margin for spacing between social buttons */
+        }
+        .social-signin-btn img {
+            margin-right: 0.75rem;
+        }
+        /* Specific styles for social buttons */
+        .google-signin-btn {
+            background-color: #69e89a;
+            color: white;
+        }
+        .google-signin-btn:hover {
+            background-color: #69e89a;
+        }
+        .instagram-signin-btn {
+            background-color: #E1306C;
+            color: white;
+        }
+        .instagram-signin-btn:hover {
+            background-color: #c1235a;
+        }
+        .snapchat-signin-btn {
+            background-color: #FFFC00;
+            color: #1a1a1a; /* Dark text for yellow background */
+        }
+        .snapchat-signin-btn:hover {
+            background-color: #e0db00;
+        }
+        /* Message div styling */
+        .message-div {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .message-div.success {
+            color: green;
+        }
+        .message-div.error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <h1 class="text-4xl font-bold mb-4">Welcome to VitalFit!</h1>
+            <p class="text-lg mb-8">Join our community to track your fitness, book classes, and achieve your wellness goals.</p>
+            <button id="signupBtn" class="btn-secondary font-semibold">Sign Up Now</button>
+        </div>
+
+        <div class="right-panel">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Login</h2>
+            <p class="text-gray-600 mb-8">Choose your portal to continue</p>
+            <div class="flex flex-col space-y-4 w-full max-w-xs">
+                <button id="customerLoginBtn" class="btn-primary w-full font-semibold">Login as Customer</button>
+                <button id="trainerLoginBtn" class="btn-primary w-full font-semibold">Login as Trainer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+            <h3 id="modalTitle" class="text-2xl font-bold mb-6 text-gray-800">Login</h3>
+            <form id="login-form" class="flex flex-col items-center w-full" action="login.php" method="post">
+                <!-- Added 'name' attributes for PHP to receive data -->
+                <input type="email" id="emailPhone" name="email" placeholder="Email Address" class="input-field" required>
+                <input type="password" id="password" name="password" placeholder="Password" class="input-field" required>
+                
+                <!-- Message div for login feedback -->
+                <div id="login-message" class="message-div"></div>
+
+                <button type="submit" class="btn-primary w-full font-semibold mb-4">Sign In</button>
+                <div class="text-gray-500 mb-4">- OR -</div>
+                <button type="button" class="social-signin-btn google-signin-btn">
+                    <img src="https://img.icons8.com/color/24/000000/google-logo.png" alt="Google icon">
+                    Sign in with Google
+                </button>
+                <button type="button" class="social-signin-btn instagram-signin-btn">
+                    <img src="https://img.icons8.com/color/24/000000/instagram-new--v1.png" alt="Instagram icon">
+                    Sign in with Instagram
+                </button>
+                <button type="button" class="social-signin-btn snapchat-signin-btn">
+                    <img src="https://img.icons8.com/color/24/000000/snapchat.png" alt="Snapchat icon">
+                    Sign in with Snapchat
+                </button>
+            </form>
+            <p class="text-sm text-gray-600 mt-6">Don't have an account? <a href="#" class="text-indigo-600 font-medium hover:underline" onclick="showSignup()">Sign Up</a></p>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Create Account</h3>
+            <form id="signup-form" class="flex flex-col items-center w-full" action="register.php" method="post">
+                <!-- Added 'name' attributes for PHP to receive data -->
+                <input type="text" id="signupName" name="signupName" placeholder="Full Name" class="input-field" required>
+                <input type="email" id="signupEmail" name="signupEmail" placeholder="Email Address" class="input-field" required>
+                <input type="password" id="signupPassword" name="signupPassword" placeholder="Password" class="input-field" required>
+                <input type="password" id="signupConfirmPassword" name="signupConfirmPassword" placeholder="Confirm Password" class="input-field" required>
+                <input type="number" id="signupAge" name="signupAge" placeholder="Age" class="input-field" required>
+                <input type="number" id="signupHeight" name="signupHeight" placeholder="Height (cm)" class="input-field" required>
+                <input type="number" id="signupWeight" name="signupWeight" placeholder="Weight (kg)" class="input-field" required>
+                <select id="userType" name="userType" class="input-field" required>
+                    <option value="">Select User Type</option>
+                    <option value="customer">Customer</option>
+                    <option value="trainer">Trainer</option>
+                </select>
+                
+                <!-- Message div for signup feedback -->
+                <div id="signup-message" class="message-div"></div>
+
+                <button type="submit" class="btn-primary w-full font-semibold mb-4">Register</button>
+                <div class="text-gray-500 mb-4">- OR -</div>
+                <button type="button" class="social-signin-btn google-signin-btn">
+                    <img src="https://img.icons8.com/color/24/000000/google-logo.png" alt="Google icon">
+                    Sign up with Google
+                </button>
+                <button type="button" class="social-signin-btn instagram-signin-btn">
+                    <img src="https://img.icons8.com/color/24/000000/instagram-new--v1.png" alt="Instagram icon">
+                    Sign up with Instagram
+                </button>
+                <button type="button" class="social-signin-btn snapchat-signin-btn">
+                    <img src="https://img.icons8.com/color/24/000000/snapchat.png" alt="Snapchat icon">
+                    Sign up with Snapchat
+                </button>
+            </form>
+            <p class="text-sm text-gray-600 mt-6">Already have an account? <a href="#" class="text-indigo-600 font-medium hover:underline" onclick="showLogin()">Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        const loginModal = document.getElementById('loginModal');
+        const signupModal = document.getElementById('signupModal');
+        const customerLoginBtn = document.getElementById('customerLoginBtn');
+        const trainerLoginBtn = document.getElementById('trainerLoginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const modalTitle = document.getElementById('modalTitle'); // This is for the login modal title
+
+        // Get form elements and message divs
+        const loginForm = document.getElementById('login-form');
+        const loginMessageDiv = document.getElementById('login-message');
+        const signupForm = document.getElementById('signup-form');
+        const signupMessageDiv = document.getElementById('signup-message');
+        const signupPassword = document.getElementById('signupPassword');
+        const signupConfirmPassword = document.getElementById('signupConfirmPassword');
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            // At least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+            const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+            if (!password) return '';
+            if (strongRegex.test(password)) return 'strong';
+            if (password.length >= 6) return 'medium';
+            return 'weak';
+        }
+
+        // Show password strength feedback
+        let passwordStrengthDiv;
+        if (signupPassword) {
+            passwordStrengthDiv = document.createElement('div');
+            passwordStrengthDiv.style.fontSize = '0.85rem';
+            passwordStrengthDiv.style.marginBottom = '0.5rem';
+            signupPassword.parentNode.insertBefore(passwordStrengthDiv, signupPassword.nextSibling);
+
+            signupPassword.addEventListener('input', function () {
+            const strength = checkPasswordStrength(signupPassword.value);
+            if (strength === 'strong') {
+                passwordStrengthDiv.textContent = 'Password strength: Strong';
+                passwordStrengthDiv.style.color = 'green';
+            } else if (strength === 'medium') {
+                passwordStrengthDiv.textContent = 'Password strength: Medium (add uppercase, lowercase, number, special character)';
+                passwordStrengthDiv.style.color = 'orange';
+            } else if (strength === 'weak') {
+                passwordStrengthDiv.textContent = 'Password strength: Weak (min 8 chars, use uppercase, lowercase, number, special character)';
+                passwordStrengthDiv.style.color = 'red';
+            } else {
+                passwordStrengthDiv.textContent = '';
+            }
+            });
+        }
+
+        // Function to open a specific modal
+        function openModal(modalElement, title = 'Login') {
+            // Update the title of the login modal only if it's the target modal
+            if (modalElement === loginModal) {
+            modalTitle.textContent = title;
+            }
+            loginModal.classList.remove('show'); // Hide login modal if open
+            signupModal.classList.remove('show'); // Hide signup modal if open
+            modalElement.classList.add('show');
+            // Clear any previous messages when opening a modal
+            loginMessageDiv.textContent = '';
+            loginMessageDiv.classList.remove('success', 'error');
+            signupMessageDiv.textContent = '';
+            signupMessageDiv.classList.remove('success', 'error');
+            if (passwordStrengthDiv) passwordStrengthDiv.textContent = '';
+        }
+
+        // Function to close any open modal
+        function closeModal() {
+            loginModal.classList.remove('show');
+            signupModal.classList.remove('show');
+            // Clear messages when closing modals
+            loginMessageDiv.textContent = '';
+            loginMessageDiv.classList.remove('success', 'error');
+            signupMessageDiv.textContent = '';
+            signupMessageDiv.classList.remove('success', 'error');
+            if (passwordStrengthDiv) passwordStrengthDiv.textContent = '';
+        }
+
+        // Event listeners for login buttons
+        customerLoginBtn.addEventListener('click', () => {
+            openModal(loginModal, 'Customer Login');
+        });
+
+        trainerLoginBtn.addEventListener('click', () => {
+            openModal(loginModal, 'Trainer Login');
+        });
+
+        // Event listener for signup button
+        signupBtn.addEventListener('click', () => {
+            openModal(signupModal, 'Create Account');
+        });
+
+        // Functions to switch between login and signup forms within the modals
+        function showSignup() {
+            closeModal();
+            openModal(signupModal, 'Create Account');
+        }
+
+        function showLogin() {
+            closeModal();
+            openModal(loginModal, 'Login');
+        }
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === loginModal) {
+            closeModal();
+            }
+            if (event.target === signupModal) {
+            closeModal();
+            }
+        });
+
+        // --- AJAX Form Submission Handlers ---
+
+        // Login Form Submission
+       // Login Form Submission
+if (loginForm) {
+    loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(loginForm);
+    const action = loginForm.getAttribute('action'); // Should be 'login.php'
+    const submitButton = loginForm.querySelector('button[type="submit"]');
+
+    loginMessageDiv.textContent = 'Logging in...';
+    loginMessageDiv.classList.remove('success', 'error');
+    loginMessageDiv.style.color = 'blue'; // Temporary color for loading
+    if (submitButton) submitButton.disabled = true;
+
+    try {
+        const response = await fetch(action, {
+        method: 'POST',
+        body: formData,
+        });
+
+        if (!response.ok) { // Check for HTTP errors (e.g., 404, 500)
+        const errorText = await response.text();
+        console.error("HTTP Error Status:", response.status);
+        console.error("HTTP Error Response Body:", errorText);
+        throw new Error(`Server responded with status ${response.status}. Check network tab.`);
+        }
+
+        const result = await response.json(); // Parse JSON response
+        console.log("Login server response:", result); // Debugging
+
+        if (result.success) {
+        // Remove the pop-up and redirect immediately on success
+        let redirectPage = 'customer.html'; // Default for customer
+        if (result.redirect_role === 'trainer') {
+            redirectPage = 'trainer.html'; // Redirect to trainer page
+        }
+        window.location.href = redirectPage;
+        
+        } else {
+        loginMessageDiv.textContent = result.message;
+        loginMessageDiv.classList.remove('success');
+        loginMessageDiv.classList.add('error');
+        // Clear password field on failure for security
+        loginForm.querySelector('input[name="password"]').value = '';
+        }
+
+    } catch (error) {
+        console.error('Error during login:', error);
+        loginMessageDiv.textContent = 'An unexpected error occurred. Please try again.';
+        loginMessageDiv.classList.remove('success');
+        loginMessageDiv.classList.add('error');
+    } finally {
+        if (submitButton) submitButton.disabled = false;
+        loginMessageDiv.style.color = ''; // Reset temporary color
+    }
+    });
+}
+
+        // Signup Form Submission
+        if (signupForm) {
+            signupForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            // Password strength validation
+            const password = signupPassword.value;
+            const confirmPassword = signupConfirmPassword.value;
+            const strength = checkPasswordStrength(password);
+
+            if (strength !== 'strong') {
+                signupMessageDiv.textContent = 'Password is not strong enough. Use at least 8 characters, uppercase, lowercase, number, and special character.';
+                signupMessageDiv.classList.remove('success');
+                signupMessageDiv.classList.add('error');
+                signupPassword.focus();
+                return;
+            }
+            if (password !== confirmPassword) {
+                signupMessageDiv.textContent = 'Passwords do not match.';
+                signupMessageDiv.classList.remove('success');
+                signupMessageDiv.classList.add('error');
+                signupConfirmPassword.focus();
+                return;
+            }
+
+            const formData = new FormData(signupForm);
+            const action = signupForm.getAttribute('action'); // Should be 'register.php'
+            const submitButton = signupForm.querySelector('button[type="submit"]');
+
+            signupMessageDiv.textContent = 'Registering...';
+            signupMessageDiv.classList.remove('success', 'error');
+            signupMessageDiv.style.color = 'blue'; // Temporary color for loading
+            if (submitButton) submitButton.disabled = true;
+
+            try {
+                const response = await fetch(action, {
+                method: 'POST',
+                body: formData,
+                });
+
+                if (!response.ok) { // Check for HTTP errors
+                const errorText = await response.text();
+                console.error("HTTP Error Status:", response.status);
+                console.error("HTTP Error Response Body:", errorText);
+                throw new Error(`Server responded with status ${response.status}. Check network tab.`);
+                }
+
+                const result = await response.json(); // Parse JSON response
+                console.log("Signup server response:", result); // Debugging
+
+                if (result.success) {
+                signupMessageDiv.textContent = result.message;
+                signupMessageDiv.classList.remove('error');
+                signupMessageDiv.classList.add('success');
+                signupForm.reset(); // Clear form on successful registration
+                if (passwordStrengthDiv) passwordStrengthDiv.textContent = '';
+                // Optionally, auto-switch to login modal after successful registration
+                setTimeout(() => {
+                    closeModal();
+                    openModal(loginModal, 'Login');
+                    loginMessageDiv.textContent = "Registration successful! Please log in.";
+                    loginMessageDiv.classList.add('success');
+                }, 1500);
+
+                } else {
+                signupMessageDiv.textContent = result.message;
+                signupMessageDiv.classList.remove('success');
+                signupMessageDiv.classList.add('error');
+                // Do not clear password fields on failure for easier correction
+                }
+
+            } catch (error) {
+                console.error('Error during registration:', error);
+                signupMessageDiv.textContent = 'An unexpected error occurred. Please try again.';
+                signupMessageDiv.classList.remove('success');
+                signupMessageDiv.classList.add('error');
+            } finally {
+                if (submitButton) submitButton.disabled = false;
+                signupMessageDiv.style.color = ''; // Reset temporary color
+            }
+            });
+        }
+    </script>
+</body>
+</html>
